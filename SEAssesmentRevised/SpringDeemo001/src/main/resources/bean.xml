@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--   a_ioc
+
+        //这是我们自己手动new的对象  我这就是new一个对象
+        UserService userService = new UserServiceImpl();  <bean>
+        现在把new对象这个步骤交给spring  现在代码比之看看起来更更复杂因为还没有整合后面
+
+        bean相当于要new一个对象了，请记住，以后如果在外面需要new几个对象的，这里就需要写几个bean
+           class:哪个类需要交给spring管理  需要类的全限定名，必需是实现类，不能使用接口
+           id: spring容器获取时使用，等会要拿这个对象，怎么拿，需有个名字
+           请所有同学注意，这个id必需代码唯一，不然会报错
+        -->
+    <bean id="userServiceSbqId" class="com.javacto.a_ioc.UserServiceImpl"></bean>
+    <!--dao层的对象-->
+    <bean id="userDaoId" class="com.javacto.b_di.UserDaoImpl"></bean>
+    <!--业务层的对象-->
+    <bean id="userServiceId" class="com.javacto.b_di.UserServiceImpl">
+    <!--业务层依赖dao层 注入dao层-->
+    <property name="userDao">
+        <ref bean="userDaoId"></ref>
+    </property>
+    </bean>
+
+    <!--3.1讲解 c_constructor-->
+    <bean id="userServiceConstructor" class="com.javacto.c_constructor.UserServiceImpl"></bean>
+
+    <!--3.2 d_static_factory-->
+    <bean id="userServiceStaticFactory" class="com.javacto.d_static_factory.MyStaticFactory" factory-method="getUserService"></bean>
+
+    <!--3.3 e_factory-->
+    <bean id="myFactory" class="com.javacto.e_factory.MyFactory" ></bean>
+    <bean id="userServiceFactory" factory-bean="myFactory" factory-method="getUserService"></bean>
+</beans>
